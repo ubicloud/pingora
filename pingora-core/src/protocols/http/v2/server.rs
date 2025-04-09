@@ -14,7 +14,7 @@
 
 //! HTTP/2 server session
 
-use bytes::Bytes;
+use bytes::{Bytes, BytesMut};
 use futures::Future;
 use h2::server;
 use h2::server::SendResponse;
@@ -419,6 +419,16 @@ impl HttpSession {
                 None
             } else {
                 b.get_buffer()
+            }
+        })
+    }
+
+    pub fn get_retry_buffer_mut(&mut self) -> Option<&mut BytesMut> {
+        self.retry_buffer.as_mut().and_then(|b| {
+            if b.is_truncated() {
+                None
+            } else {
+                b.get_buffer_mut()
             }
         })
     }

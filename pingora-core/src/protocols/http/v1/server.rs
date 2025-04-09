@@ -785,6 +785,16 @@ impl HttpSession {
         })
     }
 
+    pub fn get_retry_buffer_mut(&mut self) -> Option<&mut BytesMut> {
+        self.retry_buffer.as_mut().and_then(|b| {
+            if b.is_truncated() {
+                None
+            } else {
+                b.get_buffer_mut()
+            }
+        })
+    }
+
     fn get_body(&self, buf_ref: &BufRef) -> &[u8] {
         // TODO: these get_*() could panic. handle them better
         self.body_reader.get_body(buf_ref)

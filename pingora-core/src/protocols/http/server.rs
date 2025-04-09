@@ -19,7 +19,7 @@ use super::v1::server::HttpSession as SessionV1;
 use super::v2::server::HttpSession as SessionV2;
 use super::HttpTask;
 use crate::protocols::{Digest, SocketAddr, Stream};
-use bytes::Bytes;
+use bytes::{Bytes, BytesMut};
 use http::HeaderValue;
 use http::{header::AsHeaderName, HeaderMap};
 use pingora_error::Result;
@@ -389,6 +389,13 @@ impl Session {
         match self {
             Self::H1(s) => s.get_retry_buffer(),
             Self::H2(s) => s.get_retry_buffer(),
+        }
+    }
+
+    pub fn get_retry_buffer_mut(&mut self) -> Option<&mut BytesMut> {
+        match self {
+            Self::H1(s) => s.get_retry_buffer_mut(),
+            Self::H2(s) => s.get_retry_buffer_mut(),
         }
     }
 

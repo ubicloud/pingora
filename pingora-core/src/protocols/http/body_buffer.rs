@@ -58,4 +58,11 @@ impl FixedBuffer {
             None
         }
     }
+    pub fn get_buffer_mut(&mut self) -> Option<&mut BytesMut> {
+        if !self.buffer.is_empty() {
+            Some(&mut self.buffer)
+        } else {
+            None
+        }
+    }
 }
